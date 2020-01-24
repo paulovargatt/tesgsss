@@ -1,0 +1,7 @@
+{
+    "flutter-files.menu.provider": true,
+    "flutter-files.menu.repository": true,
+    "files.exclude": {
+        "**/*.g.dart": true
+    }
+}
