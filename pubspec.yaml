@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  path_provider: ^1.4.0
   just_audio: ^0.0.6
   audio_service:
 

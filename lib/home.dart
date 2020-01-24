@@ -41,9 +41,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
  
-  void _audioPlayerTaskEntrypoint() async {
-    AudioServiceBackground.run(() => AudioPlayerTask());
-  }
 
   @override
     void initState() {
@@ -87,6 +84,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {   
+
     return Scaffold(
       appBar: AppBar(
         title: Text('asd'),
@@ -94,31 +92,84 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-             RaisedButton(
-               onPressed: () {
+
                 
-                  _audioPlayerTaskEntrypoint;
-                 AudioService.start(
+          children: [
+              Center(
+                child: (
+                  RaisedButton(
+                    child: Text('toca'),
+                    onPressed: () {
+                      AudioService.start(
                   backgroundTaskEntrypoint: _audioPlayerTaskEntrypoint,
                   resumeOnClick: true,
                   androidNotificationChannelName: 'Audio Service Demo',
                   notificationColor: 0xFF2196f3,
                   androidNotificationIcon: 'mipmap/ic_launcher',
-                );
-                 AudioService.play();
-              
+                 );
+                    },
+                  )
+                ),
+              ),
 
-               },
-               child: Text('vargatt 21'),
-             )
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.skip_previous),
+                            iconSize: 64.0,
+                            onPressed:
+                                AudioService.skipToPrevious,
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.skip_next),
+                            iconSize: 64.0,
+                            onPressed: AudioService.skipToNext,
+                          ),
+                        ],
+                      ),
+                
           ],
+          // children: <Widget>[
+          //    RaisedButton(
+          //      onPressed: () {
+                
+          //         print('ok');
+          //        AudioService.start(
+          //         backgroundTaskEntrypoint: _audioPlayerTaskEntrypoint,
+          //         resumeOnClick: true,
+          //         androidNotificationChannelName: 'Audio Service Demo',
+          //         notificationColor: 0xFF2196f3,
+          //         androidNotificationIcon: 'mipmap/ic_launcher',
+          //       );
+          //      },
+          //      child: Text('vargatst 2s1'),
+          //    ),
+
+          //    RaisedButton(
+          //      onPressed: () {
+          //        AudioService.pause();
+          //      },
+          //      child: Text('vargatst 444'),
+          //    )
+          // ],
         ),
       ),// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
 
+class ScreenState {
+  final List<MediaItem> queue;
+  final MediaItem mediaItem;
+  final PlaybackState playbackState;
+
+  ScreenState(this.queue, this.mediaItem, this.playbackState);
+}
+
+void _audioPlayerTaskEntrypoint() async {
+  AudioServiceBackground.run(() => AudioPlayerTask());
+}
 
 
 class AudioPlayerTask extends BackgroundAudioTask {
@@ -315,4 +366,5 @@ class AudioPlayerTask extends BackgroundAudioTask {
       ];
     }
   }
+  
 }
