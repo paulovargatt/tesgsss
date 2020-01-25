@@ -15,7 +15,11 @@ abstract class _AudioModelBase with Store {
   @observable
   bool statusPlaying = false;
   @action
-  changePlaying(bool value) => statusPlaying = value;
+  changePlaying(bool value)  {
+    statusPlaying = value;
+    print('aki no change');
+    print(statusPlaying);
+  }
 
   
   @observable

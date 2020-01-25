@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:just_audio/just_audio.dart';
 import 'audio.dart';
 import 'controller_audio.dart';
 
@@ -18,6 +19,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   var playing;
   var title = '';
   var cover = '';
+  var _audioPlayer = AudioPlayer();
+
 
   final audioController = AudioPlayerTask();
   final controller = GetIt.I.get<ControllerAudio>();
@@ -34,6 +37,26 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
       
     });
 
+    _audioPlayer.playbackEventStream.listen((event) {
+        print('state events aki');
+        print(event);
+    });
+
+    
+   _audioPlayer.playbackStateStream.listen((event) {
+        print('state events aki');
+        print(event);
+    });
+
+    AudioService.playbackStateStream.listen((r) {
+      print(r.basicState);
+      if(r.basicState.toString() == 'BasicPlaybackState.paused'){
+         controller.audioModel.changePlaying(false);
+      }else{
+         controller.audioModel.changePlaying(true);
+      }
+    });
+
   
   }
 
@@ -44,6 +67,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
     print('remove dispose');
     disconnect();
   }
+
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {

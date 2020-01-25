@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:get_it/get_it.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:vargatt_audio/audio_model.dart';
 import 'package:vargatt_audio/controller_audio.dart';
 import 'dart:async';
 import 'audio.dart';
@@ -32,12 +33,12 @@ MediaControl stopControl = MediaControl(
   action: MediaAction.stop,
 );
 
-final controller = ControllerAudio();
 
+class AudioPlayerTask extends BackgroundAudioTask {
 
-class AudioPlayerTask extends BackgroundAudioTask { 
   
-
+  final controller = AudioModel();
+  
   final _queue = <MediaItem>[
     MediaItem(
       id: "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3",
@@ -86,11 +87,9 @@ class AudioPlayerTask extends BackgroundAudioTask {
       case AudioPlaybackState.stopped:
         return BasicPlaybackState.stopped;
       case AudioPlaybackState.paused:
-        controller.audioModel.changePlaying(false);
         return BasicPlaybackState.paused;
       case AudioPlaybackState.playing:
         print('playinggg');
-        controller.audioModel.changePlaying(true);
 
         return BasicPlaybackState.playing;
       case AudioPlaybackState.buffering:
@@ -183,9 +182,9 @@ class AudioPlayerTask extends BackgroundAudioTask {
       print('play');
       Future.delayed(Duration(seconds: 1)).then((v) {
         _audioPlayer.play();
-        controller.audioModel.changePlaying(true);
+        controller.changePlaying(true);
       });
-        controller.audioModel.changePlaying(true);
+        controller.changePlaying(true);
       
       
     
@@ -200,7 +199,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
       _audioPlayer.pause();
 
       Future.delayed(Duration(seconds: 1)).then((v) {
-        controller.audioModel.changePlaying(false);
+        controller.changePlaying(false);
       });
      
     }
